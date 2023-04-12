@@ -3,7 +3,9 @@ import {r4r,signal,range,br,div,input,button} from '../js/utils.js'
 
 Digits = (target,numbers) =>
 	[solutions,setSolutions] = signal []
-	solve = (t,n) => 0 while not solve1 t, _.cloneDeep n
+	solve = (t,n) => 
+		for i in _.range 2000
+			if solve1 t, _.cloneDeep n then break
 	solve1 = (t,n) =>
 		lines = []
 		while n.length >= 2
@@ -33,7 +35,7 @@ Digits = (target,numbers) =>
 		div {},
 			n = input {size:'13', value:numbers}
 			t = input {size:'3', value:target}
-			button {onclick: () => click t,n},"Enter"
+			button {onclick: () => click t,n},"solve"
 		=> for sol in solutions()
 			div {}, sol
 		br {}
