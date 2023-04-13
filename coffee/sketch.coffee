@@ -3,38 +3,40 @@ import {r4r,signal,range,br,div,input,button} from '../js/utils.js'
 
 Digits = (target,numbers) =>
 	[solutions,setSolutions] = signal []
-	solve = (t,n) => 
+	solve = (t,n) =>
 		for i in _.range 2000
 			if solve1 t, _.cloneDeep n then break
 	solve1 = (t,n) =>
 		lines = []
 		while n.length >= 2
-			[a,b] = _.sampleSize n,2
+			n = _.shuffle n
+			[a,b] = n.slice 0,2
 			if a < b then [a,b] = [b,a]
 			op = _.sample "+*-/"
 
 			c = 0
 			if op == '+' then c = a+b
 			if op == '-' then c = a-b
-			if op == '*' and b!=1 then c=a*b
+			if op == '*' and b!=1 and b!=1 then c=a*b
 			if op == '/' and a %% b == 0 and b!=1 then c=a//b
 
 			if c > 0
 				lines.push "#{a} #{op} #{b} = #{c}"
-				_.remove n, (item) => item in [a,b]
+				n.shift()
+				n.shift()
 				n.push c
 
 			if c == t
 				setSolutions lines
 				return true
-			false
+		false
 
 	click = (t,n) => solve parseInt(t.value), n.value.split(' ').map (x) => parseInt x
 
 	div {},
 		div {},
-			n = input {size:'13', value:numbers}
-			t = input {size:'3', value:target}
+			n = input {size:13, value:numbers}
+			t = input {size:3, value:target}
 			button {onclick: () => click t,n},"solve"
 		=> for sol in solutions()
 			div {}, sol
@@ -44,3 +46,4 @@ r4r =>
 	div {style:"text-align:center;font-size:2em"},
 		Digits 156,'25 15 11 7 3 2'
 		Digits 117,'1 3 9 27 81 35'
+		Digits 15,'4 2 1 1'
