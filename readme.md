@@ -4,4 +4,4 @@ https://www.youtube.com/watch?v=WslHCziT4xM
 
 Pick random numbers from the list and apply random operators.
 
-Some unnecessary numbers will be shown. Please ignore.
+Some unnecessary numbers will be shown. Please ignore them.
