@@ -8,6 +8,7 @@ Digits = (target,numbers) =>
 			if solve1 t, _.cloneDeep n then break
 	solve1 = (t,n) =>
 		lines = []
+		best = [1000,[]]
 		while n.length >= 2
 			n = _.shuffle n
 			[a,b] = n.slice 0,2
@@ -26,9 +27,11 @@ Digits = (target,numbers) =>
 				n.shift()
 				n.push c
 
-			if c == t
-				setSolutions lines
-				return true
+				if Math.abs(t-c) < Math.abs(t-best[0])
+					best = [Math.abs(t-c), lines.slice()]
+					setSolutions best[1]
+					if best[0] == 0 then return true
+
 		false
 
 	click = (t,n) => solve parseInt(t.value), n.value.split(' ').map (x) => parseInt x
