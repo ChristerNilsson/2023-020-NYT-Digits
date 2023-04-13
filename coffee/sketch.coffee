@@ -18,8 +18,9 @@ Digits = (target,numbers) =>
 			c = 0
 			if op == '+' then c = a+b
 			if op == '-' then c = a-b
-			if op == '*' and b!=1 and b!=1 then c=a*b
-			if op == '/' and a %% b == 0 and b!=1 then c=a//b
+			if b != 1
+				if op == '*' then c=a*b
+				if op == '/' and a %% b == 0 then c=a//b
 
 			if c > 0
 				lines.push "#{a} #{op} #{b} = #{c}"
@@ -27,7 +28,7 @@ Digits = (target,numbers) =>
 				n.shift()
 				n.push c
 
-				if abs(t-c) < abs(t-best[0])
+				if abs(t-c) < best[0]
 					best = [abs(t-c), lines.slice()]
 					setSolutions best[1]
 					if best[0] == 0 then return true
