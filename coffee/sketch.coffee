@@ -1,5 +1,5 @@
 import _ from 'https://cdn.skypack.dev/lodash'
-import {r4r,signal,range,br,div,input,button} from '../js/utils.js'
+import {r4r,signal,range,br,div,input,button,abs} from '../js/utils.js'
 
 Digits = (target,numbers) =>
 	[solutions,setSolutions] = signal []
@@ -27,8 +27,8 @@ Digits = (target,numbers) =>
 				n.shift()
 				n.push c
 
-				if Math.abs(t-c) < Math.abs(t-best[0])
-					best = [Math.abs(t-c), lines.slice()]
+				if abs(t-c) < abs(t-best[0])
+					best = [abs(t-c), lines.slice()]
 					setSolutions best[1]
 					if best[0] == 0 then return true
 
