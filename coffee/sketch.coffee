@@ -29,7 +29,8 @@ Digits = (target,numbers) =>
 	click = (t,n) => solve parseInt(t.value), n.value.split(' ').map (x) => parseInt x
 	solve = (target, numbers) =>
 		solution = "0123456789"
-		solve1 = (target, lst, lines=[]) =>
+		solve1 = (target, lst, level, lines) =>
+			if level==0 then return
 			n = lst.length
 			for i in range n-1
 				for j in range i+1,n
@@ -49,10 +50,16 @@ Digits = (target,numbers) =>
 							if c == target
 								if solution.length > lines1.length then solution = lines1
 							else
-								solve1 target,lst3,lines1
+								solve1 target,lst3,level-1,lines1
+
 		start = new Date()
-		solve1 target,numbers
-		if solution.length==10 then solution = ["No solution"]
+		if numbers.length > 6
+			solution = ["Maximum six numbers"]
+		else
+			for level in range 2,6
+				solve1 target,numbers,level,[]
+				if solution.length != 10 then break
+			if solution.length==10 then solution = ["No solution"]
 		setSolutions solution
 		console.log new Date() - start
 
@@ -67,7 +74,7 @@ Digits = (target,numbers) =>
 
 r4r =>
 	div {style:"text-align:center;font-size:2em"},
-		Digits 10,'1 2 3'
+		Digits 9,'1 2 3'
 		Digits 133,'4 5 8 11 15 20'
 		Digits 218,'4 5 7 9 11 20'
 		Digits 388,'3 5 9 20 23 25'

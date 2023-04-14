@@ -1,11 +1,13 @@
-[Trye it!](https://christernilsson.github.io/2023-020-NYT-Digits)
-
-https://www.youtube.com/watch?v=WslHCziT4xM
+[Try it!](https://christernilsson.github.io/2023-020-NYT-Digits)
 
 https://www.nytimes.com/games/digits
 
+https://www.youtube.com/watch?v=WslHCziT4xM
+
+
 # Method
 
-Pick random numbers from the list and apply random operators.
+* Iterative deepening search.
+* The solution found, will be the shortest
+* Maximum six numbers.
 
-Some unnecessary numbers will be shown. Please ignore them.
