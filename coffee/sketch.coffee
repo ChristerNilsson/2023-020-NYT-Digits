@@ -13,16 +13,20 @@ update = (lst,i,j,c) =>
 	lst3 = lst3.concat([c])
 	ass lst3.length,lst.length-1
 	lst3
+ass [23], update [11,12],0,1,23
 ass [13,23], update [11,12,13],0,1,23
 ass [11,25], update [11,12,13],1,2,25
 ass [12,24], update [11,12,13],0,2,24
 ass [13,14,23], update [11,12,13,14],0,1,23
-ass [12,14,24], update [11,12,13,14],0,2,24
-ass [12,13,25], update [11,12,13,14],0,3,25
-ass [11,14,25], update [11,12,13,14],1,2,25
-ass [11,13,26], update [11,12,13,14],1,3,26
-ass [11,12,27], update [11,12,13,14],2,3,27
-ass [15,55,150], update [15,25,6,55],1,2,150
+
+operation = (a,op,b) =>
+	c = 0
+	if op == '+' then c = a + b
+	if op == '-' then c = a - b
+	if b != 1
+		if op == '*' then c = a * b
+		if op == '/' and a %% b == 0 then c = a // b
+	c
 
 Digits = (target,numbers) =>
 	[solutions,setSolutions] = signal []
@@ -30,27 +34,21 @@ Digits = (target,numbers) =>
 	solve = (target, numbers) =>
 		solution = "0123456789"
 		solve1 = (target, lst, level, lines) =>
-			if level==0 then return
 			n = lst.length
 			for i in range n-1
 				for j in range i+1,n
-					a = lst[i]
-					b = lst[j]
-					if a < b then [a,b] = [b,a]
 					for op in "*+-/"
-						c = 0
-						if op == '+' then c = a + b
-						if op == '-' then c = a - b
-						if b != 1
-							if op == '*' then c = a * b
-							if op == '/' and a %% b == 0 then c = a // b
+						a = lst[i]
+						b = lst[j]
+						if a < b then [a,b] = [b,a]
+						c = operation a,op,b
 						if c > 0
 							lines1 = lines.concat ["#{a} #{op} #{b} = #{c}"]
-							lst3 = update lst,i,j,c
+							lst1 = update lst,i,j,c
 							if c == target
 								if solution.length > lines1.length then solution = lines1
 							else
-								solve1 target,lst3,level-1,lines1
+								if level > 1 then solve1 target,lst1,level-1,lines1
 
 		start = new Date()
 		if numbers.length > 6
