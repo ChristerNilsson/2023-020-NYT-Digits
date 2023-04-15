@@ -11,3 +11,9 @@ https://www.youtube.com/watch?v=WslHCziT4xM
 * The solution found, will be the shortest
 * Maximum six numbers.
 
+![Capture](Capture.JPG)
+
+* original numbers are bold
+* intermediate numbers are normal
+* indentation shows dependence
+* start from the bottom

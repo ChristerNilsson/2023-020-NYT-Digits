@@ -61,6 +61,7 @@ export log = console.log
 export abs = Math.abs
 
 export a = (a...) => h "a", a
+export bold = (a...) => h "b", a
 export br = (a...) => h "br", a
 export button = (a...) => h "button", a
 export circle = (a...) => h "circle", a

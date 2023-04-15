@@ -1,6 +1,5 @@
 import _ from 'https://cdn.skypack.dev/lodash'
-import {ass,r4r,signal,range,br,div,input,button} from '../js/utils.js'
-
+import {ass,r4r,signal,range,br,div,input,button,bold,abs} from '../js/utils.js'
 ass [], [7,8].slice 0,0
 ass [7], [7,8].slice 0,1
 ass [8], [7,8].slice 1,2
@@ -30,7 +29,35 @@ operation = (a,op,b) =>
 
 Digits = (target,numbers) =>
 	[solutions,setSolutions] = signal []
-	click = (t,n) => solve parseInt(t.value), n.value.split(' ').map (x) => parseInt x
+
+	fix = (a) =>
+		if a > 0 then return a
+		bold {}, -a
+
+	solution = []
+	traverse = (hash,key,level='') =>
+		if key not of hash then return
+		[c,a,op,b] = hash[key]
+		solution.push div {},
+			level, ' '
+			c,' = '
+			fix(a),' '
+			op, ' '
+			fix(b), ' '
+			#"#{level} #{c} = #{abs a} #{op} #{abs b}"
+		traverse hash,a,level + '•'
+		traverse hash,b,level + '•'
+
+	indented = (sol) =>
+		hash = {}
+		for line in sol
+			[c,a,op,b] = line
+			hash[c] = line
+		solution = []
+		traverse hash,target
+		solution
+
+	click = (t,n) => solve parseInt(t.value), n.value.split(' ').map (x) => -parseInt x
 	solve = (target, numbers) =>
 		solution = "0123456789"
 		solve1 = (target, lst, level, lines) =>
@@ -40,10 +67,10 @@ Digits = (target,numbers) =>
 					for op in "*+-/"
 						a = lst[i]
 						b = lst[j]
-						if a < b then [a,b] = [b,a]
-						c = operation a,op,b
+						if abs(a) < abs(b) then [a,b] = [b,a]
+						c = operation abs(a),op,abs(b)
 						if c > 0
-							lines1 = lines.concat ["#{a} #{op} #{b} = #{c}"]
+							lines1 = lines.concat [[c,a,op,b]]
 							lst1 = update lst,i,j,c
 							if c == target
 								if solution.length > lines1.length then solution = lines1
@@ -57,6 +84,9 @@ Digits = (target,numbers) =>
 			for level in range 2,6
 				solve1 target,numbers,level,[]
 				if solution.length != 10 then break
+
+			solution = indented solution
+
 			if solution.length==10 then solution = ["No solution"]
 		setSolutions solution
 		console.log new Date() - start
@@ -71,7 +101,7 @@ Digits = (target,numbers) =>
 		br {}
 
 r4r =>
-	div {style:"text-align:center;font-size:2em"},
+	div {style:'text-align:left;font-size:2em;font-family: "Courier New", Courier, monospace;'},
 		Digits 9,'1 2 3'
 		Digits 133,'4 5 8 11 15 20'
 		Digits 218,'4 5 7 9 11 20'

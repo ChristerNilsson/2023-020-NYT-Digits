@@ -8,8 +8,8 @@ def ass(a,b):
 	print('  ',a)
 	print('  ',b)
 
-def update (lst,i,j,c): return lst[:i] + lst[i+1:j] + lst[j+1:] + [c]
-ass(update([1,2,3,4,5],0,1,6), [3,4,5,6])
+def update (lst,i,j,c): return [c] + lst[:i] + lst[i+1:j] + lst[j+1:]
+ass(update([1,2,3,4,5],0,1,3), [3,3,4,5])
 
 def operation (a,op,b):
 	global antal
@@ -35,13 +35,19 @@ def solve (target, numbers):
 					if a < b: [a,b] = [b,a]
 					c = operation(a,op,b)
 					if c > 0:
-						lines1 = lines + [f"{a} {op} {b} = {c}"]
+						lines1 = lines + [[c,a,op,b]]
 						lst1 = update(lst,i,j,c)
 						if c == target:
 							solution = lines1
-							return
 						else:
 							if level > 1 and len(solution) == 0: solve1(target,lst1,level-1,lines1)
+
+	def traverse(key,level=0):
+		if key not in hash: return
+		c,a,op,b = hash[key]
+		print('  '*level,c,'=',a,op,b)
+		traverse(a,level+1)
+		traverse(b,level+1)
 
 	solution = []
 	start = time.time()
@@ -49,9 +55,12 @@ def solve (target, numbers):
 		solve1(target,numbers,level,[])
 		if len(solution) != 0: break
 	print(numbers,'=>',target,'  (',round(time.time() - start,3),'sek ) ',antal)
-	for sol in solution: print('  ',sol)
-	
-solve(12,[1,2,3,4,5])
+
+	hash = {}
+	for sol in solution: hash[sol[0]] = sol
+	traverse(target)
+
+solve(497,[24,20,15,10,8,5])
 solve(11,[1,2,3,4,5])
 solve(133,[4,5,8,11,15,20])
 solve(218,[4,5,7,9,11,20])
