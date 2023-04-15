@@ -1,5 +1,7 @@
 import time
 
+antal=0
+
 def ass(a,b):
 	if a==b: return
 	print('assert failed')
@@ -10,16 +12,18 @@ def update (lst,i,j,c): return lst[:i] + lst[i+1:j] + lst[j+1:] + [c]
 ass(update([1,2,3,4,5],0,1,6), [3,4,5,6])
 
 def operation (a,op,b):
-	c = 0
-	if op == '+': c = a + b
-	if op == '-': c = a - b
-	if b != 1:
-		if op == '*' : c = a * b
-		if op == '/' and a % b == 0 : c = a // b
-	return c
+	global antal
+	antal+=1
+	if op == '+': return a + b
+	if op == '-': return a - b
+	if op == '*' and b != 1: return a * b
+	if op == '/' and b != 1 and a % b == 0 : return a // b
+	return 0
 
 def solve (target, numbers):
 	global solution
+	global antal
+	antal=0
 	def solve1 (target, lst, level, lines):
 		global solution
 		n = len(lst)
@@ -35,15 +39,16 @@ def solve (target, numbers):
 						lst1 = update(lst,i,j,c)
 						if c == target:
 							solution = lines1
+							return
 						else:
-							if level > 1 : solve1(target,lst1,level-1,lines1)
+							if level > 1 and len(solution) == 0: solve1(target,lst1,level-1,lines1)
 
 	solution = []
 	start = time.time()
 	for level in range(1,6):
 		solve1(target,numbers,level,[])
 		if len(solution) != 0: break
-	print(numbers,'=>',target,'  (',round(time.time() - start,3),'sek )')
+	print(numbers,'=>',target,'  (',round(time.time() - start,3),'sek ) ',antal)
 	for sol in solution: print('  ',sol)
 	
 solve(12,[1,2,3,4,5])
@@ -52,3 +57,4 @@ solve(133,[4,5,8,11,15,20])
 solve(218,[4,5,7,9,11,20])
 solve(388,[3,5,9,20,23,25])
 solve(462,[3,5,9,10,20,25])
+solve(1562,[3,5,9,10,20,25])
